@@ -1,0 +1,40 @@
+<?php
+// API access key from Google API's Console
+define( 'API_ACCESS_KEY', 'AIzaSyBXVAYIQtY73PiwTgyrswNJ4fal6K6G-H0' );
+// set only for one for safety
+$registrationId = 'APA91bEKxiozTdTx5pDuu7G1zCs9zqTu3cuWqQugRIu7MV9bKyP2tXZ3ov4fncQNlbcRPzeT1_Sa5SM8ZsbvzoYFQCFN7OUuCLY3j5vOA0MjgpSo-0pwi7hBMpboeLSu0jwd4diJ2vcf';
+// prep the bundle
+$msg = array
+(
+ 'message'  => 'Blood needed Emergency of your Blood Group',
+ 'title'  => 'Emergency Blood Needed',
+ 'subtitle' => 'Blood Request',
+ 'tickerText' => 'I am in Trouble if u could help me. I need urgent blood.',
+ 'vibrate' => 1,
+ 'sound'  => 1,
+ 'largeIcon' => 'large_icon',
+ 'smallIcon' => 'small_icon'
+);
+$fields = array
+(
+ 'to'  => $registrationId,
+ 'data'   => $msg
+);
+ 
+$headers = array
+(
+ 'Authorization: key=' . API_ACCESS_KEY,
+ 'Content-Type: application/json'
+);
+ 
+$ch = curl_init();
+curl_setopt( $ch,CURLOPT_URL, 'https://gcm-http.googleapis.com/gcm/send' );
+curl_setopt( $ch,CURLOPT_POST, true );
+curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, true );
+curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+$result = curl_exec($ch );
+curl_close( $ch );
+echo $result;
+?>
